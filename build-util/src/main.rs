@@ -62,10 +62,10 @@ struct SubCommandStubLibs {
     /// print only kernel stub libs, mutually exclusive with `--user`
     #[argh(switch, short = 'k')]
     kernel: bool,
-    /// print only stub libs with conflicting symbols
+    /// print only stub libs with conflicting symbols, mutually exclusive with `--with-conflicting`
     #[argh(switch, short = 'c')]
     conflicting: bool,
-    /// include stub libs with conflicting symbols
+    /// include stub libs with conflicting symbols, mutually exclusive with `--conflicting`
     #[argh(switch)]
     with_conflicting: bool,
     /// print only undefined vitasdk-sys features
@@ -86,6 +86,10 @@ fn stub_libs(args: &SubCommandStubLibs) -> ExitCode {
     assert!(
         !(args.user & args.kernel),
         "`--kernel` and `--user` cli switches are mutually exclusive"
+    );
+    assert!(
+        !(args.conflicting & args.with_conflicting),
+        "`--conflicting` and `--with-conflicting` cli switches are mutually exclusive"
     );
 
     let mut db = VitaDb::load(&vita_headers_db_path());
