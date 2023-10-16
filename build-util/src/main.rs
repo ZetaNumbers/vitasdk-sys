@@ -83,17 +83,17 @@ struct SubCommandStubLibs {
 }
 
 fn stub_libs(args: &SubCommandStubLibs) -> ExitCode {
+    assert!(
+        !(args.user & args.kernel),
+        "`--kernel` and `--user` cli switches are mutually exclusive"
+    );
+
     let mut db = VitaDb::load(&vita_headers_db_path());
     if args.conflicting {
         db = db.split_conflicting();
     } else if !args.with_conflicting {
         db.split_conflicting();
     }
-
-    assert!(
-        !(args.user & args.kernel),
-        "`--kernel` and `--user` cli switches are mutually exclusive"
-    );
     if args.user {
         db.split_kernel();
     } else if args.kernel {
