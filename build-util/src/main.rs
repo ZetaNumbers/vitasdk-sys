@@ -119,11 +119,13 @@ fn stub_libs(args: &SubCommandStubLibs) -> ExitCode {
     };
 
     if args.as_features {
-        stub_libs
-            .iter()
-            .for_each(|stub_lib| println!("{stub_lib} = []"));
+        for stub_lib in &stub_libs {
+            println!("{stub_lib} = []")
+        }
     } else {
-        stub_libs.iter().for_each(|stub_lib| println!("{stub_lib}"));
+        for stub_lib in &stub_libs {
+            println!("{stub_lib}")
+        }
     }
 
     if !stub_libs.is_empty() && args.fail_if_any {
